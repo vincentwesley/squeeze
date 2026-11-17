@@ -8,7 +8,7 @@
   },
   "node": "v22.23.4",
   "zlib": "1.3.1-e00f703",
-  "runs": 1,
+  "runs": 5,
   "canterbury": [
     {
       "file": "alice29.txt",
@@ -16,36 +16,36 @@
       "levels": {
         "1": {
           "squeezeBytes": 64375,
-          "squeezeMs": 20.747875,
+          "squeezeMs": 6.609009,
           "zlibLevel": 1,
           "zlibBytes": 61988,
-          "zlibMs": 2.747549
+          "zlibMs": 2.248121
         },
         "6": {
           "squeezeBytes": 54316,
-          "squeezeMs": 16.751046,
+          "squeezeMs": 15.446734,
           "zlibLevel": 6,
           "zlibBytes": 54102,
-          "zlibMs": 5.351378
+          "zlibMs": 6.170701
         },
         "9": {
           "squeezeBytes": 54110,
-          "squeezeMs": 18.218784,
+          "squeezeMs": 18.74796,
           "zlibLevel": 9,
           "zlibBytes": 54014,
-          "zlibMs": 6.716729
+          "zlibMs": 7.390715
         },
         "12": {
           "squeezeBytes": 51638,
-          "squeezeMs": 376.803073,
+          "squeezeMs": 246.305997,
           "zlibLevel": 9,
           "zlibBytes": 54014,
-          "zlibMs": 6.923458
+          "zlibMs": 7.414974
         }
       },
       "inflate": {
-        "squeezeMs": 8.723248,
-        "zlibMs": 0.709775
+        "squeezeMs": 13.641214,
+        "zlibMs": 0.584195
       }
     },
     {
@@ -54,36 +54,36 @@
       "levels": {
         "1": {
           "squeezeBytes": 56292,
-          "squeezeMs": 3.484704,
+          "squeezeMs": 5.267907,
           "zlibLevel": 1,
           "zlibBytes": 54172,
-          "zlibMs": 1.704299
+          "zlibMs": 1.900073
         },
         "6": {
           "squeezeBytes": 48894,
-          "squeezeMs": 11.337277,
+          "squeezeMs": 14.317919,
           "zlibLevel": 6,
           "zlibBytes": 48564,
-          "zlibMs": 4.369562
+          "zlibMs": 4.239833
         },
         "9": {
           "squeezeBytes": 48775,
-          "squeezeMs": 17.628343,
+          "squeezeMs": 14.845323,
           "zlibLevel": 9,
           "zlibBytes": 48531,
-          "zlibMs": 4.837143
+          "zlibMs": 4.599349
         },
         "12": {
           "squeezeBytes": 46402,
-          "squeezeMs": 183.589144,
+          "squeezeMs": 160.427473,
           "zlibLevel": 9,
           "zlibBytes": 48531,
-          "zlibMs": 4.730723
+          "zlibMs": 4.918812
         }
       },
       "inflate": {
-        "squeezeMs": 8.623764,
-        "zlibMs": 0.553443
+        "squeezeMs": 1.043564,
+        "zlibMs": 0.497236
       }
     },
     {
@@ -92,36 +92,36 @@
       "levels": {
         "1": {
           "squeezeBytes": 8983,
-          "squeezeMs": 7.795901,
+          "squeezeMs": 0.953028,
           "zlibLevel": 1,
           "zlibBytes": 8708,
-          "zlibMs": 0.399583
+          "zlibMs": 0.32319
         },
         "6": {
           "squeezeBytes": 7955,
-          "squeezeMs": 2.430586,
+          "squeezeMs": 1.343499,
           "zlibLevel": 6,
           "zlibBytes": 7913,
-          "zlibMs": 0.505989
+          "zlibMs": 0.503093
         },
         "9": {
           "squeezeBytes": 7934,
-          "squeezeMs": 2.302383,
+          "squeezeMs": 1.529701,
           "zlibLevel": 9,
           "zlibBytes": 7896,
-          "zlibMs": 0.55263
+          "zlibMs": 0.54782
         },
         "12": {
           "squeezeBytes": 7686,
-          "squeezeMs": 137.156895,
+          "squeezeMs": 31.662954,
           "zlibLevel": 9,
           "zlibBytes": 7896,
-          "zlibMs": 0.649833
+          "zlibMs": 0.494876
         }
       },
       "inflate": {
-        "squeezeMs": 1.38857,
-        "zlibMs": 0.103725
+        "squeezeMs": 0.177476,
+        "zlibMs": 0.069874
       }
     },
     {
@@ -130,36 +130,36 @@
       "levels": {
         "1": {
           "squeezeBytes": 3632,
-          "squeezeMs": 0.473432,
+          "squeezeMs": 0.473794,
           "zlibLevel": 1,
           "zlibBytes": 3595,
-          "zlibMs": 0.196798
+          "zlibMs": 0.123596
         },
         "6": {
           "squeezeBytes": 3130,
-          "squeezeMs": 0.645084,
+          "squeezeMs": 0.733142,
           "zlibLevel": 6,
           "zlibBytes": 3115,
-          "zlibMs": 0.289956
+          "zlibMs": 0.210053
         },
         "9": {
           "squeezeBytes": 3122,
-          "squeezeMs": 1.423755,
+          "squeezeMs": 0.781405,
           "zlibLevel": 9,
           "zlibBytes": 3111,
-          "zlibMs": 0.323832
+          "zlibMs": 0.285955
         },
         "12": {
           "squeezeBytes": 3043,
-          "squeezeMs": 16.056995,
+          "squeezeMs": 16.012605,
           "zlibLevel": 9,
           "zlibBytes": 3111,
-          "zlibMs": 0.339241
+          "zlibMs": 0.252667
         }
       },
       "inflate": {
-        "squeezeMs": 0.647314,
-        "zlibMs": 0.046933
+        "squeezeMs": 0.071091,
+        "zlibMs": 0.027053
       }
     },
     {
@@ -168,36 +168,36 @@
       "levels": {
         "1": {
           "squeezeBytes": 1326,
-          "squeezeMs": 0.277758,
+          "squeezeMs": 0.361208,
           "zlibLevel": 1,
           "zlibBytes": 1294,
-          "zlibMs": 0.092618
+          "zlibMs": 0.056088
         },
         "6": {
           "squeezeBytes": 1216,
-          "squeezeMs": 0.395994,
+          "squeezeMs": 0.406144,
           "zlibLevel": 6,
           "zlibBytes": 1206,
-          "zlibMs": 0.156233
+          "zlibMs": 0.070558
         },
         "9": {
           "squeezeBytes": 1216,
-          "squeezeMs": 0.366612,
+          "squeezeMs": 0.340395,
           "zlibLevel": 9,
           "zlibBytes": 1206,
-          "zlibMs": 0.137866
+          "zlibMs": 0.085549
         },
         "12": {
           "squeezeBytes": 1182,
-          "squeezeMs": 6.840947,
+          "squeezeMs": 6.45292,
           "zlibLevel": 9,
           "zlibBytes": 1206,
-          "zlibMs": 0.206822
+          "zlibMs": 0.073647
         }
       },
       "inflate": {
-        "squeezeMs": 0.086634,
-        "zlibMs": 0.028437
+        "squeezeMs": 0.029537,
+        "zlibMs": 0.015773
       }
     },
     {
@@ -206,36 +206,36 @@
       "levels": {
         "1": {
           "squeezeBytes": 225498,
-          "squeezeMs": 15.555008,
+          "squeezeMs": 14.44287,
           "zlibLevel": 1,
           "zlibBytes": 238394,
-          "zlibMs": 4.124009
+          "zlibMs": 4.280871
         },
         "6": {
           "squeezeBytes": 201139,
-          "squeezeMs": 48.228559,
+          "squeezeMs": 47.628625,
           "zlibLevel": 6,
           "zlibBytes": 210191,
-          "zlibMs": 20.940717
+          "zlibMs": 13.497812
         },
         "9": {
           "squeezeBytes": 201153,
-          "squeezeMs": 764.543848,
+          "squeezeMs": 780.985213,
           "zlibLevel": 9,
           "zlibBytes": 207023,
-          "zlibMs": 367.38758
+          "zlibMs": 333.69007
         },
         "12": {
           "squeezeBytes": 175943,
-          "squeezeMs": 4070.13271,
+          "squeezeMs": 4138.252928,
           "zlibLevel": 9,
           "zlibBytes": 207023,
-          "zlibMs": 334.982327
+          "zlibMs": 344.714455
         }
       },
       "inflate": {
-        "squeezeMs": 15.765717,
-        "zlibMs": 2.877066
+        "squeezeMs": 5.441625,
+        "zlibMs": 1.995391
       }
     },
     {
@@ -244,36 +244,36 @@
       "levels": {
         "1": {
           "squeezeBytes": 172694,
-          "squeezeMs": 13.714635,
+          "squeezeMs": 10.168644,
           "zlibLevel": 1,
           "zlibBytes": 166198,
-          "zlibMs": 4.947841
+          "zlibMs": 5.413567
         },
         "6": {
           "squeezeBytes": 144544,
-          "squeezeMs": 40.371785,
+          "squeezeMs": 35.388374,
           "zlibLevel": 6,
           "zlibBytes": 144314,
-          "zlibMs": 13.485263
+          "zlibMs": 13.717586
         },
         "9": {
           "squeezeBytes": 143981,
-          "squeezeMs": 50.498798,
+          "squeezeMs": 45.383818,
           "zlibLevel": 9,
           "zlibBytes": 144079,
-          "zlibMs": 16.297272
+          "zlibMs": 18.486596
         },
         "12": {
           "squeezeBytes": 137676,
-          "squeezeMs": 675.890091,
+          "squeezeMs": 628.447411,
           "zlibLevel": 9,
           "zlibBytes": 144079,
-          "zlibMs": 16.116833
+          "zlibMs": 15.979111
         }
       },
       "inflate": {
-        "squeezeMs": 4.226428,
-        "zlibMs": 1.681661
+        "squeezeMs": 3.411175,
+        "zlibMs": 1.463903
       }
     },
     {
@@ -282,36 +282,36 @@
       "levels": {
         "1": {
           "squeezeBytes": 226585,
-          "squeezeMs": 15.21349,
+          "squeezeMs": 13.177337,
           "zlibLevel": 1,
           "zlibBytes": 216458,
-          "zlibMs": 6.756666
+          "zlibMs": 6.015339
         },
         "6": {
           "squeezeBytes": 194939,
-          "squeezeMs": 53.860923,
+          "squeezeMs": 53.976735,
           "zlibLevel": 6,
           "zlibBytes": 193394,
-          "zlibMs": 20.19147
+          "zlibMs": 20.233533
         },
         "9": {
           "squeezeBytes": 194118,
-          "squeezeMs": 84.535551,
+          "squeezeMs": 82.022668,
           "zlibLevel": 9,
           "zlibBytes": 193205,
-          "zlibMs": 23.809283
+          "zlibMs": 23.551604
         },
         "12": {
           "squeezeBytes": 185027,
-          "squeezeMs": 655.333301,
+          "squeezeMs": 635.867967,
           "zlibLevel": 9,
           "zlibBytes": 193205,
-          "zlibMs": 23.032639
+          "zlibMs": 23.168781
         }
       },
       "inflate": {
-        "squeezeMs": 5.465154,
-        "zlibMs": 1.990929
+        "squeezeMs": 3.982468,
+        "zlibMs": 1.799772
       }
     },
     {
@@ -320,36 +320,36 @@
       "levels": {
         "1": {
           "squeezeBytes": 65699,
-          "squeezeMs": 8.122591,
+          "squeezeMs": 5.790377,
           "zlibLevel": 1,
           "zlibBytes": 64707,
-          "zlibMs": 2.078041
+          "zlibMs": 1.800212
         },
         "6": {
           "squeezeBytes": 55759,
-          "squeezeMs": 14.163356,
+          "squeezeMs": 14.029459,
           "zlibLevel": 6,
           "zlibBytes": 55373,
-          "zlibMs": 4.889789
+          "zlibMs": 4.781317
         },
         "9": {
           "squeezeBytes": 52172,
-          "squeezeMs": 123.916075,
+          "squeezeMs": 157.532563,
           "zlibLevel": 9,
           "zlibBytes": 51904,
-          "zlibMs": 44.988251
+          "zlibMs": 45.355919
         },
         "12": {
           "squeezeBytes": 49376,
-          "squeezeMs": 4008.559276,
+          "squeezeMs": 3876.040211,
           "zlibLevel": 9,
           "zlibBytes": 51904,
-          "zlibMs": 45.49712
+          "zlibMs": 45.048569
         }
       },
       "inflate": {
-        "squeezeMs": 12.144401,
-        "zlibMs": 0.835164
+        "squeezeMs": 2.651509,
+        "zlibMs": 0.855365
       }
     },
     {
@@ -358,36 +358,36 @@
       "levels": {
         "1": {
           "squeezeBytes": 14220,
-          "squeezeMs": 1.891766,
+          "squeezeMs": 1.389097,
           "zlibLevel": 1,
           "zlibBytes": 14517,
-          "zlibMs": 0.570397
+          "zlibMs": 0.414018
         },
         "6": {
           "squeezeBytes": 12733,
-          "squeezeMs": 6.059705,
+          "squeezeMs": 3.225806,
           "zlibLevel": 6,
           "zlibBytes": 13281,
-          "zlibMs": 0.934901
+          "zlibMs": 0.798142
         },
         "9": {
           "squeezeBytes": 12633,
-          "squeezeMs": 19.635475,
+          "squeezeMs": 17.029102,
           "zlibLevel": 9,
           "zlibBytes": 13265,
-          "zlibMs": 3.453197
+          "zlibMs": 3.30512
         },
         "12": {
           "squeezeBytes": 12065,
-          "squeezeMs": 138.637563,
+          "squeezeMs": 78.276169,
           "zlibLevel": 9,
           "zlibBytes": 13265,
-          "zlibMs": 3.759352
+          "zlibMs": 3.288497
         }
       },
       "inflate": {
-        "squeezeMs": 0.692993,
-        "zlibMs": 0.281628
+        "squeezeMs": 0.26271,
+        "zlibMs": 0.119964
       }
     },
     {
@@ -396,38 +396,495 @@
       "levels": {
         "1": {
           "squeezeBytes": 1846,
-          "squeezeMs": 0.404738,
+          "squeezeMs": 0.248112,
           "zlibLevel": 1,
           "zlibBytes": 1821,
-          "zlibMs": 0.184867
+          "zlibMs": 0.070819
         },
         "6": {
           "squeezeBytes": 1730,
-          "squeezeMs": 0.504367,
+          "squeezeMs": 0.29502,
           "zlibLevel": 6,
           "zlibBytes": 1721,
-          "zlibMs": 0.238084
+          "zlibMs": 0.09747
         },
         "9": {
           "squeezeBytes": 1730,
-          "squeezeMs": 0.575517,
+          "squeezeMs": 0.303002,
           "zlibLevel": 9,
           "zlibBytes": 1721,
-          "zlibMs": 0.206846
+          "zlibMs": 0.09577
         },
         "12": {
           "squeezeBytes": 1690,
-          "squeezeMs": 8.253717,
+          "squeezeMs": 6.472989,
           "zlibLevel": 9,
           "zlibBytes": 1721,
-          "zlibMs": 0.173611
+          "zlibMs": 0.102898
         }
       },
       "inflate": {
-        "squeezeMs": 0.086699,
-        "zlibMs": 0.030777
+        "squeezeMs": 0.367568,
+        "zlibMs": 0.023469
       }
     }
   ],
-  "silesia": null
+  "silesia": [
+    {
+      "file": "dickens",
+      "bytes": 10192446,
+      "levels": {
+        "1": {
+          "squeezeBytes": 4560881,
+          "squeezeMs": 258.677073,
+          "zlibLevel": 1,
+          "zlibBytes": 4360912,
+          "zlibMs": 130.484437
+        },
+        "6": {
+          "squeezeBytes": 3864899,
+          "squeezeMs": 1197.695397,
+          "zlibLevel": 6,
+          "zlibBytes": 3844430,
+          "zlibMs": 403.800775
+        },
+        "9": {
+          "squeezeBytes": 3848952,
+          "squeezeMs": 1586.544461,
+          "zlibLevel": 9,
+          "zlibBytes": 3840386,
+          "zlibMs": 460.887701
+        },
+        "10": {
+          "squeezeBytes": 3701175,
+          "squeezeMs": 4895.438947,
+          "zlibLevel": 9,
+          "zlibBytes": 3840386,
+          "zlibMs": 450.91642
+        }
+      },
+      "inflate": {
+        "squeezeMs": 85.30612,
+        "zlibMs": 36.468232
+      }
+    },
+    {
+      "file": "mozilla",
+      "bytes": 51220480,
+      "levels": {
+        "1": {
+          "squeezeBytes": 20296716,
+          "squeezeMs": 1535.151571,
+          "zlibLevel": 1,
+          "zlibBytes": 20709753,
+          "zlibMs": 568.421412
+        },
+        "6": {
+          "squeezeBytes": 18884065,
+          "squeezeMs": 3881.898861,
+          "zlibLevel": 6,
+          "zlibBytes": 19386443,
+          "zlibMs": 1357.846185
+        },
+        "9": {
+          "squeezeBytes": 18845371,
+          "squeezeMs": 16172.746661,
+          "zlibLevel": 9,
+          "zlibBytes": 19361821,
+          "zlibMs": 5763.471895
+        },
+        "10": {
+          "squeezeBytes": 18374721,
+          "squeezeMs": 22735.656236,
+          "zlibLevel": 9,
+          "zlibBytes": 19361821,
+          "zlibMs": 5856.473838
+        }
+      },
+      "inflate": {
+        "squeezeMs": 427.287277,
+        "zlibMs": 184.542624
+      }
+    },
+    {
+      "file": "mr",
+      "bytes": 9970564,
+      "levels": {
+        "1": {
+          "squeezeBytes": 3807925,
+          "squeezeMs": 198.172251,
+          "zlibLevel": 1,
+          "zlibBytes": 3794801,
+          "zlibMs": 100.565615
+        },
+        "6": {
+          "squeezeBytes": 3660069,
+          "squeezeMs": 1054.252985,
+          "zlibLevel": 6,
+          "zlibBytes": 3606178,
+          "zlibMs": 318.645384
+        },
+        "9": {
+          "squeezeBytes": 3646206,
+          "squeezeMs": 3065.838093,
+          "zlibLevel": 9,
+          "zlibBytes": 3606105,
+          "zlibMs": 577.817242
+        },
+        "10": {
+          "squeezeBytes": 3498419,
+          "squeezeMs": 4592.186177,
+          "zlibLevel": 9,
+          "zlibBytes": 3606105,
+          "zlibMs": 566.250201
+        }
+      },
+      "inflate": {
+        "squeezeMs": 64.995793,
+        "zlibMs": 28.083071
+      }
+    },
+    {
+      "file": "nci",
+      "bytes": 33553445,
+      "levels": {
+        "1": {
+          "squeezeBytes": 4617713,
+          "squeezeMs": 250.779955,
+          "zlibLevel": 1,
+          "zlibBytes": 4155782,
+          "zlibMs": 110.395306
+        },
+        "6": {
+          "squeezeBytes": 3198620,
+          "squeezeMs": 885.617918,
+          "zlibLevel": 6,
+          "zlibBytes": 3134565,
+          "zlibMs": 357.825144
+        },
+        "9": {
+          "squeezeBytes": 2984905,
+          "squeezeMs": 5108.771919,
+          "zlibLevel": 9,
+          "zlibBytes": 2951396,
+          "zlibMs": 1564.490024
+        },
+        "10": {
+          "squeezeBytes": 2887147,
+          "squeezeMs": 32174.988178,
+          "zlibLevel": 9,
+          "zlibBytes": 2951396,
+          "zlibMs": 1593.018085
+        }
+      },
+      "inflate": {
+        "squeezeMs": 98.253441,
+        "zlibMs": 45.443237
+      }
+    },
+    {
+      "file": "ooffice",
+      "bytes": 6152192,
+      "levels": {
+        "1": {
+          "squeezeBytes": 3277868,
+          "squeezeMs": 237.630431,
+          "zlibLevel": 1,
+          "zlibBytes": 3337899,
+          "zlibMs": 97.181247
+        },
+        "6": {
+          "squeezeBytes": 3089381,
+          "squeezeMs": 575.429936,
+          "zlibLevel": 6,
+          "zlibBytes": 3171203,
+          "zlibMs": 177.428285
+        },
+        "9": {
+          "squeezeBytes": 3083957,
+          "squeezeMs": 992.597796,
+          "zlibLevel": 9,
+          "zlibBytes": 3168757,
+          "zlibMs": 253.764031
+        },
+        "10": {
+          "squeezeBytes": 3002991,
+          "squeezeMs": 1838.738256,
+          "zlibLevel": 9,
+          "zlibBytes": 3168757,
+          "zlibMs": 266.836872
+        }
+      },
+      "inflate": {
+        "squeezeMs": 67.263746,
+        "zlibMs": 26.852339
+      }
+    },
+    {
+      "file": "osdb",
+      "bytes": 10085684,
+      "levels": {
+        "1": {
+          "squeezeBytes": 4027975,
+          "squeezeMs": 203.675694,
+          "zlibLevel": 1,
+          "zlibBytes": 3937973,
+          "zlibMs": 98.862238
+        },
+        "6": {
+          "squeezeBytes": 3682842,
+          "squeezeMs": 480.860231,
+          "zlibLevel": 6,
+          "zlibBytes": 3663244,
+          "zlibMs": 176.314303
+        },
+        "9": {
+          "squeezeBytes": 3662785,
+          "squeezeMs": 673.13937,
+          "zlibLevel": 9,
+          "zlibBytes": 3663030,
+          "zlibMs": 181.107161
+        },
+        "10": {
+          "squeezeBytes": 3617537,
+          "squeezeMs": 2921.715821,
+          "zlibLevel": 9,
+          "zlibBytes": 3663030,
+          "zlibMs": 176.043282
+        }
+      },
+      "inflate": {
+        "squeezeMs": 60.723553,
+        "zlibMs": 25.679282
+      }
+    },
+    {
+      "file": "reymont",
+      "bytes": 6627202,
+      "levels": {
+        "1": {
+          "squeezeBytes": 2366856,
+          "squeezeMs": 130.522193,
+          "zlibLevel": 1,
+          "zlibBytes": 2309889,
+          "zlibMs": 62.898607
+        },
+        "6": {
+          "squeezeBytes": 1855057,
+          "squeezeMs": 759.579033,
+          "zlibLevel": 6,
+          "zlibBytes": 1839232,
+          "zlibMs": 305.208435
+        },
+        "9": {
+          "squeezeBytes": 1818902,
+          "squeezeMs": 2283.501202,
+          "zlibLevel": 9,
+          "zlibBytes": 1820698,
+          "zlibMs": 648.111617
+        },
+        "10": {
+          "squeezeBytes": 1715372,
+          "squeezeMs": 5309.480077,
+          "zlibLevel": 9,
+          "zlibBytes": 1820698,
+          "zlibMs": 618.06769
+        }
+      },
+      "inflate": {
+        "squeezeMs": 37.952073,
+        "zlibMs": 19.465171
+      }
+    },
+    {
+      "file": "samba",
+      "bytes": 21606400,
+      "levels": {
+        "1": {
+          "squeezeBytes": 6288654,
+          "squeezeMs": 405.944619,
+          "zlibLevel": 1,
+          "zlibBytes": 6190436,
+          "zlibMs": 158.021596
+        },
+        "6": {
+          "squeezeBytes": 5413646,
+          "squeezeMs": 1047.876533,
+          "zlibLevel": 6,
+          "zlibBytes": 5451101,
+          "zlibMs": 421.30348
+        },
+        "9": {
+          "squeezeBytes": 5370703,
+          "squeezeMs": 2120.03182,
+          "zlibLevel": 9,
+          "zlibBytes": 5407472,
+          "zlibMs": 735.977497
+        },
+        "10": {
+          "squeezeBytes": 5149520,
+          "squeezeMs": 11151.22042,
+          "zlibLevel": 9,
+          "zlibBytes": 5407472,
+          "zlibMs": 733.760198
+        }
+      },
+      "inflate": {
+        "squeezeMs": 103.657344,
+        "zlibMs": 51.152544
+      }
+    },
+    {
+      "file": "sao",
+      "bytes": 7251944,
+      "levels": {
+        "1": {
+          "squeezeBytes": 5563672,
+          "squeezeMs": 334.661673,
+          "zlibLevel": 1,
+          "zlibBytes": 5603652,
+          "zlibMs": 142.900557
+        },
+        "6": {
+          "squeezeBytes": 5332204,
+          "squeezeMs": 811.360498,
+          "zlibLevel": 6,
+          "zlibBytes": 5430160,
+          "zlibMs": 274.119947
+        },
+        "9": {
+          "squeezeBytes": 5326141,
+          "squeezeMs": 931.861489,
+          "zlibLevel": 9,
+          "zlibBytes": 5428589,
+          "zlibMs": 288.415542
+        },
+        "10": {
+          "squeezeBytes": 5245410,
+          "squeezeMs": 1657.063516,
+          "zlibLevel": 9,
+          "zlibBytes": 5428589,
+          "zlibMs": 293.667349
+        }
+      },
+      "inflate": {
+        "squeezeMs": 75.412388,
+        "zlibMs": 31.824101
+      }
+    },
+    {
+      "file": "webster",
+      "bytes": 41458703,
+      "levels": {
+        "1": {
+          "squeezeBytes": 14892929,
+          "squeezeMs": 773.615407,
+          "zlibLevel": 1,
+          "zlibBytes": 14357186,
+          "zlibMs": 433.48634
+        },
+        "6": {
+          "squeezeBytes": 12190119,
+          "squeezeMs": 2851.241482,
+          "zlibLevel": 6,
+          "zlibBytes": 12108502,
+          "zlibMs": 1077.312569
+        },
+        "9": {
+          "squeezeBytes": 12052562,
+          "squeezeMs": 4338.870874,
+          "zlibLevel": 9,
+          "zlibBytes": 12008961,
+          "zlibMs": 1573.188118
+        },
+        "10": {
+          "squeezeBytes": 11610699,
+          "squeezeMs": 23237.633408,
+          "zlibLevel": 9,
+          "zlibBytes": 12008961,
+          "zlibMs": 1609.091712
+        }
+      },
+      "inflate": {
+        "squeezeMs": 277.394059,
+        "zlibMs": 133.677227
+      }
+    },
+    {
+      "file": "x-ray",
+      "bytes": 8474240,
+      "levels": {
+        "1": {
+          "squeezeBytes": 6014777,
+          "squeezeMs": 319.15795,
+          "zlibLevel": 1,
+          "zlibBytes": 6356487,
+          "zlibMs": 174.203471
+        },
+        "6": {
+          "squeezeBytes": 6039854,
+          "squeezeMs": 669.134048,
+          "zlibLevel": 6,
+          "zlibBytes": 6256629,
+          "zlibMs": 224.573469
+        },
+        "9": {
+          "squeezeBytes": 6039925,
+          "squeezeMs": 680.409666,
+          "zlibLevel": 9,
+          "zlibBytes": 6256628,
+          "zlibMs": 220.351763
+        },
+        "10": {
+          "squeezeBytes": 5784071,
+          "squeezeMs": 1437.264367,
+          "zlibLevel": 9,
+          "zlibBytes": 6256628,
+          "zlibMs": 213.251448
+        }
+      },
+      "inflate": {
+        "squeezeMs": 100.35625,
+        "zlibMs": 44.32231
+      }
+    },
+    {
+      "file": "xml",
+      "bytes": 5345280,
+      "levels": {
+        "1": {
+          "squeezeBytes": 957348,
+          "squeezeMs": 61.271815,
+          "zlibLevel": 1,
+          "zlibBytes": 908178,
+          "zlibMs": 25.486236
+        },
+        "6": {
+          "squeezeBytes": 684492,
+          "squeezeMs": 187.690945,
+          "zlibLevel": 6,
+          "zlibBytes": 684189,
+          "zlibMs": 63.237087
+        },
+        "9": {
+          "squeezeBytes": 655418,
+          "squeezeMs": 343.190118,
+          "zlibLevel": 9,
+          "zlibBytes": 658645,
+          "zlibMs": 135.659393
+        },
+        "10": {
+          "squeezeBytes": 638247,
+          "squeezeMs": 3481.602945,
+          "zlibLevel": 9,
+          "zlibBytes": 658645,
+          "zlibMs": 133.061574
+        }
+      },
+      "inflate": {
+        "squeezeMs": 15.427998,
+        "zlibMs": 7.635804
+      }
+    }
+  ]
 }
