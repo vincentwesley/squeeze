@@ -34,6 +34,21 @@ export interface InflateResult {
 let fixedLit: DecodeTable | null = null;
 let fixedDist: DecodeTable | null = null;
 
+function eof(): never {
+  fail('UNEXPECTED_EOF', 'unexpected end of deflate stream');
+}
+
+/** Return a larger copy of `out` holding at least `need` bytes (never more than `maxCap`). */
+function grow(out: Uint8Array, op: number, need: number, maxCap: number, limit: number): Uint8Array {
+  if (need > maxCap) fail('OUTPUT_LIMIT', `output exceeds the limit of ${limit} bytes`);
+  let size = out.length * 2;
+  while (size < need) size *= 2;
+  if (size > maxCap) size = maxCap;
+  const next = new Uint8Array(size);
+  next.set(out.subarray(0, op));
+  return next;
+}
+
 /** Decode a raw DEFLATE stream. */
 export function inflateRaw(input: Uint8Array, options: InflateOptions = {}): Uint8Array {
   return inflateRawAt(input, 0, options).data;
@@ -60,20 +75,9 @@ export function inflateRawAt(input: Uint8Array, start: number, options: InflateO
   const maxCap = dictLen + limit;
   let op = dictLen;
 
-  const grow = (need: number): void => {
-    if (need > maxCap) fail('OUTPUT_LIMIT', `output exceeds the limit of ${limit} bytes`);
-    let size = out.length * 2;
-    while (size < need) size *= 2;
-    if (size > maxCap) size = maxCap;
-    const next = new Uint8Array(size);
-    next.set(out.subarray(0, op));
-    out = next;
-  };
-
   let pos = start;
   let bitbuf = 0;
   let bitcnt = 0;
-  const eof = (): never => fail('UNEXPECTED_EOF', 'unexpected end of deflate stream');
 
   let final = 0;
   do {
@@ -103,7 +107,7 @@ export function inflateRawAt(input: Uint8Array, start: number, options: InflateO
       if ((len ^ 0xffff) !== nlen) fail('BAD_STORED_LENGTH', 'stored block length check failed');
       pos += 4;
       if (pos + len > inLen) eof();
-      if (op + len > out.length) grow(op + len);
+      if (op + len > out.length) out = grow(out, op, op + len, maxCap, limit);
       out.set(input.subarray(pos, pos + len), op);
       op += len;
       pos += len;
@@ -237,12 +241,21 @@ export function inflateRawAt(input: Uint8Array, start: number, options: InflateO
     const lmask = (1 << lroot) - 1;
     const dmask = (1 << droot) - 1;
 
-    // Symbol loop.
+    // Symbol loop. Refill only when fewer than 15 bits remain (one longest code).
     for (;;) {
-      while (bitcnt <= 24) {
-        bitbuf |= (pos < inLen ? input[pos] : 0) << bitcnt;
-        pos++;
-        bitcnt += 8;
+      if (bitcnt < 15) {
+        if (pos + 4 <= inLen) {
+          while (bitcnt <= 24) {
+            bitbuf |= input[pos++] << bitcnt;
+            bitcnt += 8;
+          }
+        } else {
+          while (bitcnt <= 24) {
+            bitbuf |= (pos < inLen ? input[pos] : 0) << bitcnt;
+            pos++;
+            bitcnt += 8;
+          }
+        }
       }
       const tokenBitStart = tokens ? ((pos - start) << 3) - bitcnt : 0;
       let e = lt[bitbuf & lmask];
@@ -258,7 +271,7 @@ export function inflateRawAt(input: Uint8Array, start: number, options: InflateO
       let sym = e >>> 8;
       if (sym < 256) {
         if (pos > inLen && (pos - inLen) << 3 > bitcnt) eof();
-        if (op >= out.length) grow(op + 1);
+        if (op >= out.length) out = grow(out, op, op + 1, maxCap, limit);
         if (tokens) tokens.push(op - dictLen, 0, sym, ((pos - start) << 3) - bitcnt - tokenBitStart);
         out[op++] = sym;
         continue;
@@ -270,14 +283,16 @@ export function inflateRawAt(input: Uint8Array, start: number, options: InflateO
       sym -= 257;
       if (sym >= 29) fail('BAD_SYMBOL', 'invalid literal/length code');
       const lb = LENGTH_EXTRA[sym];
+      if (bitcnt < lb + 15) {
+        while (bitcnt <= 24) {
+          bitbuf |= (pos < inLen ? input[pos] : 0) << bitcnt;
+          pos++;
+          bitcnt += 8;
+        }
+      }
       const len = LENGTH_BASE[sym] + (bitbuf & ((1 << lb) - 1));
       bitbuf >>>= lb;
       bitcnt -= lb;
-      while (bitcnt <= 24) {
-        bitbuf |= (pos < inLen ? input[pos] : 0) << bitcnt;
-        pos++;
-        bitcnt += 8;
-      }
       e = dt[bitbuf & dmask];
       if (e & 0x80) {
         bitbuf >>>= droot;
@@ -303,7 +318,7 @@ export function inflateRawAt(input: Uint8Array, start: number, options: InflateO
       bitcnt -= db;
       if (pos > inLen && (pos - inLen) << 3 > bitcnt) eof();
       if (dist > op) fail('DISTANCE_TOO_FAR', 'invalid distance too far back');
-      if (op + len > out.length) grow(op + len);
+      if (op + len > out.length) out = grow(out, op, op + len, maxCap, limit);
       if (tokens) tokens.push(op - dictLen, len, dist, ((pos - start) << 3) - bitcnt - tokenBitStart);
       let from = op - dist;
       if (dist >= len && len > 32) {
