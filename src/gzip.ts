@@ -26,8 +26,9 @@ export interface GzipOptions extends DeflateOptions, GzipHeader {}
 
 export interface GunzipOptions extends InflateOptions {
   /**
-   * What to do with bytes after the last member that are not another gzip member.
-   * Default false: throw TRAILING_DATA. (GNU gzip warns and ignores them.)
+   * Accept bytes after the last member that are not another gzip member.
+   * Default false: throw TRAILING_DATA. Anything after a 0x00 byte that follows a member is
+   * treated as padding and ignored.
    */
   allowTrailingData?: boolean;
 }
@@ -99,9 +100,10 @@ export function parseGzipHeader(input: Uint8Array, p: number): { header: GzipHea
   const need = (n: number) => {
     if (p + n > input.length) fail('UNEXPECTED_EOF', 'gzip header truncated');
   };
+  if ((p < input.length && input[p] !== 0x1f) || (p + 1 < input.length && input[p + 1] !== 0x8b))
+    fail('BAD_HEADER', 'not a gzip file (bad magic)');
+  if (p + 2 < input.length && input[p + 2] !== 8) fail('BAD_HEADER', 'unknown compression method');
   need(10);
-  if (input[p] !== 0x1f || input[p + 1] !== 0x8b) fail('BAD_HEADER', 'not a gzip file (bad magic)');
-  if (input[p + 2] !== 8) fail('BAD_HEADER', 'unknown compression method');
   const flg = input[p + 3];
   if (flg & 0xe0) fail('BAD_HEADER', 'unknown header flags set');
   const header: GzipHeader = {
@@ -165,7 +167,9 @@ export function gunzipMembers(
     total += r.data.length;
     members.push({ header, start, end: p, size: r.data.length });
     if (p < input.length && !(input[p] === 0x1f && (p + 1 >= input.length || input[p + 1] === 0x8b))) {
-      if (options.allowTrailingData) break;
+      // A zero byte after a member starts padding (e.g. tape blocking) and ends the file,
+      // the same rule Node's zlib binding uses.
+      if (input[p] === 0 || options.allowTrailingData) break;
       fail('TRAILING_DATA', `${input.length - p} bytes of trailing garbage after gzip data`);
     }
   } while (p < input.length);

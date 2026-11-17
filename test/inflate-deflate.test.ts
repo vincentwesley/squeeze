@@ -1,6 +1,14 @@
 import * as zlib from 'node:zlib';
 import { describe, expect, it } from 'vitest';
-import { deflateRaw, gunzip, gzip, inflateRaw, newTrace, zlibCompress, zlibDecompress } from '../src/index.js';
+import {
+  deflateRaw,
+  gunzip,
+  gzip,
+  inflateRaw,
+  newTrace,
+  zlibCompress,
+  zlibDecompress,
+} from '../src/index.js';
 import { sampleInputs } from './helpers.js';
 
 const inputs = sampleInputs();
@@ -42,13 +50,17 @@ describe('ratio is in zlib’s league', () => {
       for (const level of [6, 9]) {
         const ours = deflateRaw(data, { level }).length;
         const theirs = zlib.deflateRawSync(data, { level }).length;
-        expect(ours, `${name} level ${level}: ${ours} vs ${theirs}`).toBeLessThanOrEqual(Math.ceil(theirs * 1.03) + 16);
+        expect(ours, `${name} level ${level}: ${ours} vs ${theirs}`).toBeLessThanOrEqual(
+          Math.ceil(theirs * 1.03) + 16,
+        );
       }
     }
   });
   it('level 12 beats zlib -9 on text', () => {
     const data = inputs.find((i) => i.name === 'word salad 200k')!.data;
-    expect(deflateRaw(data, { level: 12 }).length).toBeLessThan(zlib.deflateRawSync(data, { level: 9 }).length);
+    expect(deflateRaw(data, { level: 12 }).length).toBeLessThan(
+      zlib.deflateRawSync(data, { level: 9 }).length,
+    );
   });
 });
 

@@ -47,7 +47,7 @@ export function inflateRawAt(input: Uint8Array, start: number, options: InflateO
   const tokens = trace ? trace.tokens : null;
 
   let dictLen = 0;
-  const hint = Math.max(1024, Math.min(options.sizeHint ?? (inLen - start) * 4, limit, 1 << 30));
+  const hint = Math.min(limit, Math.max(1024, Math.min(options.sizeHint ?? (inLen - start) * 4, 1 << 30)));
   let out: Uint8Array;
   if (options.dictionary && options.dictionary.length > 0) {
     const d = options.dictionary.subarray(Math.max(0, options.dictionary.length - 32768));

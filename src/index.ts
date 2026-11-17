@@ -13,5 +13,6 @@ export {
 } from './gzip.js';
 export { buildCodeLengths, canonicalCodes } from './huffman.js';
 export { type InflateOptions, inflateRaw, inflateRawAt } from './inflate.js';
+export * from './png/index.js';
 export { bitCostPerByte, newTrace, TokenTrace, type Trace, type TraceBlock } from './trace.js';
 export { type ZlibDecompressOptions, zlibCompress, zlibDecompress } from './zlib.js';

@@ -5,7 +5,7 @@
 
 import { buildCodeLengths } from '../huffman.js';
 import { DIST_EXTRA, distCode, LENGTH_EXTRA, LENGTH_TO_CODE } from '../tables.js';
-import { buildDynamicCode, dataBits, type BlockWriter } from './blocks.js';
+import { type BlockWriter, buildDynamicCode, dataBits } from './blocks.js';
 import { HashChains, MAX_MATCH, MIN_MATCH, WSIZE } from './lz77.js';
 
 export interface OptimalConfig {

@@ -289,11 +289,7 @@ export class BlockWriter {
     }
     if (this.trace) {
       const headerBits =
-        type === 0
-          ? w.bitLength - blockBitStart - rawLen * 8
-          : type === 1
-            ? 3
-            : 3 + dyn.headerBits;
+        type === 0 ? w.bitLength - blockBitStart - rawLen * 8 : type === 1 ? 3 : 3 + dyn.headerBits;
       this.trace.blocks.push({
         type,
         final,
@@ -304,8 +300,14 @@ export class BlockWriter {
         outEnd: this.rawPos - this.dictLen,
         tokenStart: tokStart,
         tokenEnd: this.trace.tokens.count,
-        litLenLengths: type === 0 ? undefined : type === 1 ? FIXED_LITLEN_LENGTHS.slice() : dyn.litLens.slice(0, dyn.hlit),
-        distLengths: type === 0 ? undefined : type === 1 ? FIXED_DIST_LENGTHS.slice(0, 30) : dyn.distLens.slice(0, dyn.hdist),
+        litLenLengths:
+          type === 0 ? undefined : type === 1 ? FIXED_LITLEN_LENGTHS.slice() : dyn.litLens.slice(0, dyn.hlit),
+        distLengths:
+          type === 0
+            ? undefined
+            : type === 1
+              ? FIXED_DIST_LENGTHS.slice(0, 30)
+              : dyn.distLens.slice(0, dyn.hdist),
         codeLengthLengths: type === 2 ? dyn.clenLens.slice() : undefined,
       });
     }

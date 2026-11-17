@@ -111,7 +111,7 @@ export interface DecodeTable {
   rootBits: number;
 }
 
-export const enum CodeKind {
+export enum CodeKind {
   /** Code-length code: must be complete. */
   Codes = 0,
   /** Literal/length or distance code: incomplete only if a single 1-bit code. */

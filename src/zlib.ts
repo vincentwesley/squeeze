@@ -41,7 +41,11 @@ export interface ZlibResult {
 }
 
 /** Decompress a zlib stream starting at `start`, reporting where it ended. */
-export function zlibDecompressAt(input: Uint8Array, start: number, options: ZlibDecompressOptions = {}): ZlibResult {
+export function zlibDecompressAt(
+  input: Uint8Array,
+  start: number,
+  options: ZlibDecompressOptions = {},
+): ZlibResult {
   if (input.length - start < 2) fail('UNEXPECTED_EOF', 'zlib header truncated');
   const cmf = input[start];
   const flg = input[start + 1];

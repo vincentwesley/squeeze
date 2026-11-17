@@ -71,7 +71,12 @@ export class HashChains {
     const b0 = buf[pos];
     const b1 = buf[pos + 1];
     while (cur >= limit && chain-- > 0) {
-      if (buf[cur + bestLen] === scanEnd && buf[cur + bestLen - 1] === scanEnd1 && buf[cur] === b0 && buf[cur + 1] === b1) {
+      if (
+        buf[cur + bestLen] === scanEnd &&
+        buf[cur + bestLen - 1] === scanEnd1 &&
+        buf[cur] === b0 &&
+        buf[cur + 1] === b1
+      ) {
         let len = 2;
         while (len < maxLen && buf[cur + len] === buf[pos + len]) len++;
         if (len > bestLen) {
@@ -100,7 +105,8 @@ export function compressGreedy(bw: BlockWriter, buf: Uint8Array, start: number, 
     let len = 0;
     if (pos + 2 < end) {
       const head = hc.insert(pos);
-      if (head >= 0 && pos - head <= WSIZE) len = hc.longest(pos, head, MIN_MATCH - 1, cfg.chain, cfg.nice, end);
+      if (head >= 0 && pos - head <= WSIZE)
+        len = hc.longest(pos, head, MIN_MATCH - 1, cfg.chain, cfg.nice, end);
     }
     if (len >= MIN_MATCH) {
       bw.match(len, hc.matchDist);
