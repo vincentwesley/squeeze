@@ -1,0 +1,61 @@
+# Research notes
+
+Collected before writing any code (2026-11-17). Each entry says what it is and what Squeeze takes from it.
+
+## Specifications
+
+| Spec | Link | Notes |
+|---|---|---|
+| RFC 1951, DEFLATE 1.3 | https://www.rfc-editor.org/rfc/rfc1951 | Block types 0/1/2, canonical Huffman codes, length/distance tables, code-length alphabet (16/17/18 run-length codes and the `16,17,18,0,8,7,9,6,10,5,11,4,12,3,13,2,14,1,15` permutation). Bits are packed LSB-first; Huffman codes are sent MSB-first, so codes are bit-reversed before writing. |
+| RFC 1950, zlib 3.3 | https://www.rfc-editor.org/rfc/rfc1950 | 2-byte header (CMF/FLG, `(CMF*256+FLG) % 31 == 0`), optional DICTID, big-endian Adler-32 trailer of the *uncompressed* data. CM must be 8, CINFO ≤ 7. FLEVEL is informational. |
+| RFC 1952, gzip 4.3 | https://www.rfc-editor.org/rfc/rfc1952 | 10-byte header, FLG bits FTEXT/FHCRC/FEXTRA/FNAME/FCOMMENT, reserved bits must be zero, trailer CRC-32 + ISIZE (mod 2^32), little-endian. A file may contain several members, which concatenate. |
+| PNG 3rd edition (W3C Rec, June 2025) | https://www.w3.org/TR/png-3/ | Signature, chunk layout with CRC over type+data, IHDR rules (allowed colour type/bit depth pairs), PLTE/tRNS rules, IDAT concatenation into one zlib stream, the five filter types and Paeth predictor, Adam7 interlacing (7 passes, empty passes have no filter bytes), chunk ordering rules. 3rd edition adds APNG chunks (acTL/fcTL/fdAT), cICP, mDCV, cLLI; a static decoder may ignore them. |
+| PNG 2nd edition / ISO 15948 | https://www.w3.org/TR/2003/REC-PNG-20031110/ | Same core rules; useful for its "Recommendations for encoders" section (filter choice heuristic: minimum sum of absolute differences, filter type 0 for palette/low bit-depth images). |
+
+## Implementations studied
+
+| Project | Link | What I learned |
+|---|---|---|
+| zlib (Gailly & Adler) | https://github.com/madler/zlib | `deflate.c`: hash chains with `head[]`/`prev[]`, the level configuration table (`good_length, max_lazy, nice_length, max_chain`), `deflate_fast` (greedy) vs `deflate_slow` (lazy evaluation), the "TOO_FAR" rule dropping 3-byte matches with distance > 4096. `trees.c`: block cost comparison of stored/fixed/dynamic. `inftrees.c`: exact rules for which code sets are rejected — over-subscribed always, incomplete unless the code has a single 1-bit code. `inflate.c`: error strings and the rule `nlen > 286 || ndist > 30` → error. |
+| zlib `doc/algorithm.txt` | https://github.com/madler/zlib/blob/develop/doc/algorithm.txt | Two-level decoding tables ("first level 9 bits, then sub-tables") and why lazy matching helps. |
+| puff.c (Mark Adler) | https://github.com/madler/zlib/blob/develop/contrib/puff/puff.c | The smallest correct inflater; clear statement of every error condition. Used as the checklist for the decoder's error cases. |
+| infgen (Mark Adler) | https://github.com/madler/infgen | Disassembles deflate streams into blocks/literals/matches. Inspiration for `squeeze inspect` and the web "inspect a file" view. |
+| libdeflate (Eric Biggers) | https://github.com/ebiggers/libdeflate | Whole-buffer API is simpler and faster than streaming; levels 10–12 use near-optimal parsing with an iterative cost model; block splitting by observing symbol statistics. |
+| Zopfli (Google) | https://github.com/google/zopfli | Optimal parsing as a shortest path over positions with costs from the previous iteration's Huffman code; length-limited codes via Katajainen's boundary package-merge. |
+| fflate / pako | https://github.com/101arrowz/fflate , https://github.com/nodeca/pako | Proof that pure JS can reach tens of MB/s deflate and hundreds of MB/s inflate with typed arrays and 32-bit integer bit buffers; reminded me that JS bitwise ops are 32-bit signed, so bit buffers must stay ≤ 31 bits or use `>>>`. |
+| lodepng | https://github.com/lvandeve/lodepng | Readable PNG codec: colour conversion for every type/depth, Adam7 offsets, auto colour-type selection in the encoder (palette if ≤ 256 colours, grey if R=G=B, drop alpha if opaque). |
+| libpng / pngcheck | http://www.libpng.org/pub/png/ | Behaviour on broken files: critical-chunk CRC errors are fatal; unknown critical chunks are fatal; unknown ancillary chunks are skipped. |
+| OptiPNG / oxipng | https://github.com/shssoichiro/oxipng | Try several filter strategies and keep the smallest — the idea behind `squeeze png optimise`. |
+
+## Algorithms
+
+- Huffman, "A Method for the Construction of Minimum-Redundancy Codes" (1952).
+- Length-limited codes: Larmore & Hirschberg, "A fast algorithm for optimal length-limited Huffman codes" (package-merge, 1990). DEFLATE limits codes to 15 bits (7 for the code-length code), so a plain Huffman tree is not always legal.
+- Canonical Huffman codes: codes are fully determined by lengths (RFC 1951 §3.2.2), so only lengths are transmitted.
+- LZ77: Ziv & Lempel, 1977. Hash of the next 3 bytes indexes chains of earlier positions.
+- Paeth predictor: Alan W. Paeth, *Graphics Gems II* (1991).
+
+## Visual explanations (for the web page)
+
+- Antaeus Feldspar, "An Explanation of the Deflate Algorithm" — https://zlib.net/feldspar.html — the classic prose walkthrough.
+- gzthermal (Caveman) — https://simonwillison.net/2017/Nov/21/gzthermal — colours each byte by how many bits it costs. Adopted as the "bit cost heat map" overlay.
+- LZ77 visualisers such as https://abacktools.com/tools/compress/analyzers/lz77-compression-visualizer show tuples in a table; they model the textbook algorithm, not the real bitstream. Squeeze's page shows the *actual* tokens and Huffman codes written to the file, which is the gap worth filling.
+- Simple arc diagrams (Martin Wattenberg's "The Shape of Song") — arcs from a repeat back to its source are an intuitive picture of back-references.
+
+## Test data and licences
+
+| Data | Source | Licence | Use |
+|---|---|---|---|
+| Canterbury corpus | https://corpus.canterbury.ac.nz/resources/cantrbry.tar.gz (sha256 `f140e8a5…f8fb`) | No licence stated | Downloaded in tests/CI only. **Not bundled.** |
+| Silesia corpus | https://sun.aei.polsl.pl//~sdeor/corpus/silesia.zip (sha256 `0626e25f…77af`) | No licence stated | Downloaded in tests/CI only. **Not bundled.** |
+| PngSuite 2017-07-19 | http://www.schaik.com/pngsuite/PngSuite-2017jul19.tgz (sha256 `0294b244…bfdc8`) | "Permission to use, copy, modify and distribute these images for any purpose and without fee is hereby granted. (c) Willem van Schaik, 1996, 2011" | Downloaded in tests; a handful of images may be bundled in the web page with that notice. |
+
+PngSuite's 14 `x*` files are the deliberately broken ones: bad signature bytes (`xs1/xs2/xs4/xs7`), added CR/LF (`xcr`, `xlf`), bad IHDR CRC (`xhd`), illegal colour types 1 and 9 (`xc1`, `xc9`), illegal bit depths 0/3/99 (`xd0/xd3/xd9`), missing IDAT (`xdt`) and bad IDAT CRC (`xcs`).
+
+## Reference tools available for interoperability testing
+
+- Node's built-in `zlib` module (links the real zlib) — used in tests as the reference compressor/decompressor.
+- `gzip` command-line tool (GNU gzip) — CLI interop.
+- Python's `zlib` and Pillow — second independent decoder in the interop script.
+- `pngjs` — independent pure-JS PNG decoder for pixel comparison.
+- Chromium (via Playwright) — a real browser decoding the PNGs Squeeze writes.
