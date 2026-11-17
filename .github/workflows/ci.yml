@@ -1,0 +1,109 @@
+name: CI
+
+on:
+  push:
+    branches: [main, "claude/**"]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Lint, build, test (Node ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [22, 24]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+      - name: Cache test corpora
+        uses: actions/cache@v4
+        with:
+          path: .cache/corpora
+          key: corpora-${{ hashFiles('scripts/fetch-corpora.mjs') }}
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run build
+      - name: Download test corpora (Canterbury, PngSuite)
+        run: node scripts/fetch-corpora.mjs
+      - run: npm test
+      - name: Fuzz (20 000 cases, random seed)
+        run: npm run fuzz -- --iterations 20000
+      - uses: actions/upload-artifact@v4
+        if: matrix.node == 22
+        with:
+          name: dist
+          path: dist
+          retention-days: 7
+
+  node20-runtime:
+    name: Runtime smoke test (Node 20)
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 20
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+      - name: CLI round trip with GNU gzip
+        run: |
+          head -c 2000000 /dev/urandom | base64 > sample.txt
+          node dist/cli/squeeze.js compress sample.txt -l 9
+          gzip -dc sample.txt.gz | cmp - sample.txt
+          gzip -c sample.txt | node dist/cli/squeeze.js decompress -c | cmp - sample.txt
+
+  silesia:
+    name: Silesia corpus interop
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - name: Cache Silesia
+        uses: actions/cache@v4
+        with:
+          path: .cache/corpora
+          key: corpora-silesia-${{ hashFiles('scripts/fetch-corpora.mjs') }}
+      - run: npm ci
+      - run: node scripts/fetch-corpora.mjs --all
+      - run: npx vitest run test/corpora/silesia.test.ts
+        env:
+          SQUEEZE_SILESIA: "1"
+
+  browser:
+    name: Web page and browser PNG decoding (Chromium)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npm install --no-save playwright && npx playwright install --with-deps chromium
+      - run: node scripts/web-check.mjs --screenshots screenshots
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: screenshots
+          path: screenshots
+          retention-days: 7
