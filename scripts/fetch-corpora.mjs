@@ -15,16 +15,22 @@ export const CORPORA_DIR = process.env.SQUEEZE_CORPORA_DIR ?? join(root, '.cache
 const SOURCES = {
   canterbury: {
     url: 'https://corpus.canterbury.ac.nz/resources/cantrbry.tar.gz',
+    mirrors: [
+      'http://corpus.canterbury.ac.nz/resources/cantrbry.tar.gz',
+      'https://web.archive.org/web/2024id_/https://corpus.canterbury.ac.nz/resources/cantrbry.tar.gz',
+    ],
     sha256: 'f140e8a5b73d3f53198555a63bfb827889394a42f20825df33c810c3d5e3f8fb',
     kind: 'tgz',
   },
   pngsuite: {
     url: 'http://www.schaik.com/pngsuite/PngSuite-2017jul19.tgz',
+    mirrors: ['https://web.archive.org/web/2024id_/http://www.schaik.com/pngsuite/PngSuite-2017jul19.tgz'],
     sha256: '0294b244c95a8342c01b00010cf34abdcabc7c6a34fd0fe1bd963917537bfdc8',
     kind: 'tgz',
   },
   silesia: {
     url: 'https://sun.aei.polsl.pl//~sdeor/corpus/silesia.zip',
+    mirrors: ['https://web.archive.org/web/2024id_/https://sun.aei.polsl.pl//~sdeor/corpus/silesia.zip'],
     sha256: '0626e25f45c0ffb5dc801f13b7c82a3b75743ba07e3a71835a41e3d9f63c77af',
     kind: 'zip',
   },
@@ -33,14 +39,31 @@ const SOURCES = {
 async function download(url) {
   for (let attempt = 1; ; attempt++) {
     try {
-      const res = await fetch(url);
+      const res = await fetch(url, { headers: { 'user-agent': 'squeeze-test-corpus-fetch/1.0' } });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       return Buffer.from(await res.arrayBuffer());
     } catch (e) {
-      if (attempt >= 4) throw new Error(`download failed for ${url}: ${e.message}`);
+      if (attempt >= 3) throw new Error(`download failed for ${url}: ${e.message}`);
       await new Promise((r) => setTimeout(r, 2000 * attempt));
     }
   }
+}
+
+/** Try the primary URL, then each mirror; accept only bytes matching the pinned hash. */
+async function downloadVerified(name, src) {
+  const errors = [];
+  for (const url of [src.url, ...(src.mirrors ?? [])]) {
+    try {
+      process.stderr.write(`downloading ${name} from ${url}\n`);
+      const buf = await download(url);
+      const got = createHash('sha256').update(buf).digest('hex');
+      if (got === src.sha256) return buf;
+      errors.push(`${url}: SHA-256 mismatch (got ${got})`);
+    } catch (e) {
+      errors.push(e.message);
+    }
+  }
+  throw new Error(`${name}: every source failed:\n  ${errors.join('\n  ')}`);
 }
 
 export async function fetchCorpus(name) {
@@ -52,10 +75,7 @@ export async function fetchCorpus(name) {
   const archive = join(CORPORA_DIR, `${name}.${src.kind === 'zip' ? 'zip' : 'tgz'}`);
   let buf = existsSync(archive) ? readFileSync(archive) : null;
   if (!buf || createHash('sha256').update(buf).digest('hex') !== src.sha256) {
-    process.stderr.write(`downloading ${name} from ${src.url}\n`);
-    buf = await download(src.url);
-    const got = createHash('sha256').update(buf).digest('hex');
-    if (got !== src.sha256) throw new Error(`${name}: SHA-256 mismatch (got ${got})`);
+    buf = await downloadVerified(name, src);
     writeFileSync(archive, buf);
   }
   if (src.kind === 'tgz') execFileSync('tar', ['xzf', archive, '-C', dir]);
