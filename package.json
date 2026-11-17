@@ -1,6 +1,6 @@
 {
   "name": "@vins-atelier/squeeze",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "DEFLATE, zlib, gzip and PNG written from scratch in TypeScript, with a CLI and a live visualiser.",
   "author": "Vin's Atelier",
   "license": "MIT",

@@ -40,3 +40,15 @@ npm publish --access public
 ## 3. Enable private vulnerability reporting
 
 `SECURITY.md` asks reporters to use GitHub's private reporting. Turn it on: **Settings → Code security → Private vulnerability reporting → Enable**.
+
+## 4. Tag and release v1.0.0 (only if missing)
+
+The session tries to push the `v1.0.0` tag itself. If https://github.com/vincentwesley/squeeze/tags does not list it, or if you want a GitHub Release page:
+
+```sh
+git checkout main && git pull
+git tag -a v1.0.0 -m "Squeeze 1.0.0"
+git push origin v1.0.0
+```
+
+Then go to **Releases → Draft a new release**, choose tag `v1.0.0`, title it "Squeeze 1.0.0", paste the 1.0.0 section of CHANGELOG.md, and optionally attach `dist/web` as a zip (`npm run build && cd dist && zip -r squeeze-web.zip web`).
