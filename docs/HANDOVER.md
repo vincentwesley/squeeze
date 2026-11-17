@@ -23,7 +23,7 @@ All milestones M0–M8 in docs/PLAN.md are complete. Development happened on bra
 - **Interoperability, both ways:** Node's zlib decodes Squeeze's output at every level (0–12) for raw, zlib and gzip; Squeeze decodes zlib's output at levels 0–9 and the Huffman-only, RLE and fixed strategies; GNU gzip interop including multi-member files; all 11 Canterbury and 12 Silesia files round-trip.
 - **PngSuite:** all 162 valid images match pngjs pixel for pixel (RGB under alpha 0 excepted, D16); all 14 broken images are rejected with `SqueezeError`; every image re-encodes losslessly (default, interlaced, optimised). Pillow decodes 258 Squeeze-written PNGs with 0 mismatches; Chromium decodes 7 test PNGs pixel-exactly.
 - **Fuzzing:** more than 500 000 differential cases across runs (seeds 7, 11–14, 21–23, 31, CI random seeds), 0 disagreements with zlib, 0 non-`SqueezeError` exceptions, slowest case under 40 ms. One real divergence found and fixed (gzip trailing data, D15).
-- **Tests:** 72 vitest tests (69 run by default, 3 Silesia tests opt-in); 23 hand-made error cases checked against zlib.
+- **Tests:** 72 vitest tests (69 run by default, 3 Silesia tests opt-in); 23 error-handling tests (malformed streams are also checked against zlib).
 - **Web page:** checked at 390×844 and 1280×800 in Chromium, with no console errors and no horizontal overflow; all four tabs work; the largest file in `dist/web` is 177 KiB (a source map).
 - **Repository standard:** MIT licence (Copyright (c) 2026 Vin's Atelier), README, SECURITY.md, CONTRIBUTING.md, CHANGELOG.md, Dependabot, docs (RESEARCH, DECISIONS, PLAN, ACCEPTANCE, BENCHMARKS).
 
