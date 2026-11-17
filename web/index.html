@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Squeeze — watch DEFLATE compress your text and images</title>
+  <meta name="description" content="DEFLATE, zlib, gzip and PNG written from scratch. See LZ77 back-references, Huffman trees and compression levels on your own text and images.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232a78d6'/%3E%3Cpath d='M8 12h16M11 16h10M14 20h4' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+</head>
+<body>
+  <header class="top">
+    <div class="wrap">
+      <h1>Squeeze</h1>
+      <p class="lede">The compression inside zip, gzip and PNG, written from scratch and running in this page. Type, paste or open a file and watch what DEFLATE does with it.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="tabs" role="tablist" aria-label="Views">
+      <button type="button" role="tab" id="tab-text" data-tab="text" aria-selected="true" aria-controls="panel-text">Back-refs</button>
+      <button type="button" role="tab" id="tab-huffman" data-tab="huffman" aria-selected="false" aria-controls="panel-huffman" tabindex="-1">Huffman</button>
+      <button type="button" role="tab" id="tab-levels" data-tab="levels" aria-selected="false" aria-controls="panel-levels" tabindex="-1">Levels</button>
+      <button type="button" role="tab" id="tab-png" data-tab="png" aria-selected="false" aria-controls="panel-png" tabindex="-1">PNG</button>
+    </div>
+
+    <section id="panel-text" role="tabpanel" aria-labelledby="tab-text">
+      <div class="controls">
+        <label class="field grow" for="input">Text to compress
+          <textarea id="input" rows="6" spellcheck="false"></textarea>
+        </label>
+      </div>
+      <div class="controls row">
+        <label class="field" for="level"><span>Level <output id="level-out">6</output></span>
+          <input id="level" type="range" min="0" max="12" value="6">
+        </label>
+        <button id="sample" type="button" class="secondary">Sample text</button>
+        <label class="button secondary">Open a file…<input id="open-file" type="file" hidden></label>
+      </div>
+      <p class="hint">Open any text file, or a <code>.gz</code> / <code>.zz</code> / <code>.deflate</code> file to see the back-references another compressor chose.</p>
+      <p id="stats" class="stats" aria-live="polite"></p>
+
+      <div class="controls row view-controls">
+        <fieldset class="seg">
+          <legend class="sr-only">Colour by</legend>
+          <label><input type="radio" name="mode" value="refs" checked> Back-references</label>
+          <label><input type="radio" name="mode" value="heat"> Bit cost</label>
+        </fieldset>
+        <label class="field small" for="min-arc"><span>Arcs for matches of <output id="min-arc-out">4</output>+ bytes</span>
+          <input id="min-arc" type="range" min="3" max="40" value="4">
+        </label>
+      </div>
+      <div class="legend" id="legend-refs"><span><i class="sw match"></i>copied from earlier (a match)</span><span><i class="sw lit"></i>literal byte</span><span><i class="sw arc"></i>arc: copy → source</span><span class="muted">Hover or tap a character for details.</span></div>
+      <div class="legend" id="legend-heat" hidden><span>Bits spent per byte:</span><span class="ramp"><i style="background:#cde2fb"></i><i style="background:#86b6ef"></i><i style="background:#3987e5"></i><i style="background:#1c5cab"></i><i style="background:#0d366b"></i></span><span class="muted">0 → 12+ bits (uncompressed text costs 8)</span></div>
+      <div id="textview" class="textview"></div>
+      <p id="view-note" class="hint"></p>
+      <h2>Blocks</h2>
+      <p class="hint">DEFLATE cuts the stream into blocks; each picks stored, fixed or its own (dynamic) Huffman code, whichever is smallest.</p>
+      <ol id="blocks" class="blocks"></ol>
+    </section>
+
+    <section id="panel-huffman" role="tabpanel" aria-labelledby="tab-huffman" hidden>
+      <p class="hint">Huffman's algorithm repeatedly joins the two least frequent symbols (or subtrees) into one. Frequent symbols end up near the top with short codes; rare ones sink and get long codes. Each 0/1 on the way down is one bit of the code.</p>
+      <div class="controls row">
+        <label class="field" for="huff-block">Block <select id="huff-block"></select></label>
+        <label class="field" for="huff-alphabet">Alphabet
+          <select id="huff-alphabet">
+            <option value="lit">Literals and lengths</option>
+            <option value="dist">Distances</option>
+          </select>
+        </label>
+        <button id="huff-play" type="button">Play</button>
+        <button id="huff-step-btn" type="button" class="secondary">Step</button>
+        <button id="huff-reset" type="button" class="secondary">Reset</button>
+        <span id="huff-step" class="muted" aria-live="polite"></span>
+      </div>
+      <p id="huff-kind" class="hint"></p>
+      <div id="huff-tree" class="tree"></div>
+      <div id="huff-table" class="table-wrap"></div>
+    </section>
+
+    <section id="panel-levels" role="tabpanel" aria-labelledby="tab-levels" hidden>
+      <p class="hint">Every level is a trade: searching harder for matches costs time and saves bytes. Levels 1–9 use zlib's own settings; 10–12 find a near-optimal parse with a cost model, which is much slower and a few percent smaller. “Browser” is your browser's built-in (native) deflate, for reference.</p>
+      <p id="levels-note" class="hint" aria-live="polite"></p>
+      <div id="levels" class="levels"></div>
+    </section>
+
+    <section id="panel-png" role="tabpanel" aria-labelledby="tab-png" hidden>
+      <div class="controls row">
+        <button id="sample-image" type="button" class="secondary">Sample image</button>
+        <label class="button secondary">Open an image…<input id="open-image" type="file" accept="image/*" hidden></label>
+        <a id="png-download" class="button" href="data:image/png;base64," download="squeeze.png" hidden>Download Squeeze's PNG</a>
+      </div>
+      <p class="hint">PNG predicts each row from the pixels above and to the left (the <em>filter</em>), then DEFLATE-compresses the prediction errors. Open a PNG to have Squeeze decode it, or any image to have Squeeze encode it.</p>
+      <div class="png-grid">
+        <figure class="png-figure">
+          <div class="png-stage"><canvas id="png-canvas" width="1" height="1" aria-label="Image"></canvas><canvas id="png-rows" width="1" height="1" aria-label="Filter type of each row"></canvas></div>
+          <figcaption>Strip on the right: the filter chosen for each row.</figcaption>
+          <ul id="png-legend" class="legend-list"></ul>
+        </figure>
+        <div>
+          <div id="png-info" aria-live="polite"></div>
+          <h3>Size with each filter strategy</h3>
+          <div id="png-filters" class="levels compact"></div>
+          <div id="png-chunks"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap foot">
+    <p>Squeeze is built by <b>Vin's Atelier</b>. DEFLATE (RFC 1951), zlib (RFC 1950), gzip (RFC 1952) and PNG implemented from scratch in TypeScript; everything runs locally in your browser. MIT licence · <a href="https://github.com/vincentwesley/squeeze">Source on GitHub</a></p>
+  </footer>
+  <script src="app.js"></script>
+</body>
+</html>

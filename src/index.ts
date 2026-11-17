@@ -10,6 +10,7 @@ export {
   gunzip,
   gunzipMembers,
   gzip,
+  parseGzipHeader,
 } from './gzip.js';
 export { buildCodeLengths, canonicalCodes } from './huffman.js';
 export { type InflateOptions, inflateRaw, inflateRawAt } from './inflate.js';
