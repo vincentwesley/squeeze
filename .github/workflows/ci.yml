@@ -41,7 +41,7 @@ jobs:
       - run: npm test
       - name: Fuzz (20 000 cases, random seed)
         run: npm run fuzz -- --iterations 20000
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: matrix.node == 22
         with:
           name: dist
@@ -101,7 +101,7 @@ jobs:
       - run: npm run build
       - run: npm install --no-save playwright && npx playwright install --with-deps chromium
       - run: node scripts/web-check.mjs --screenshots screenshots
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: screenshots
