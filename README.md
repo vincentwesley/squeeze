@@ -132,7 +132,7 @@ npm run build && npm run serve   # http://127.0.0.1:8080/
 | Fuzzing                     | Differential fuzzing against zlib: mutated raw/zlib/gzip streams (bit flips, truncation, splices, random dynamic headers, tiny output limits) must be accepted or rejected by **both**, with identical output. PNG fuzzing with repaired CRCs so mutations reach the decoder. Short run in `npm test`, 20 000 cases per CI run, `npm run fuzz` for more. |
 | Hand-made error cases       | Each RFC error condition (`test/errors.test.ts`), checked against zlib too.                                                                                                                                                                                                                                                                              |
 
-`npm run acceptance` runs every check in [docs/ACCEPTANCE.md](docs/ACCEPTANCE.md); `npm run acceptance -- --full` adds Silesia, a 50 000-case fuzz run, the benchmark and the browser checks.
+`npm run acceptance` runs every check in [docs/ACCEPTANCE.md](docs/ACCEPTANCE.md); `npm run acceptance -- --full` adds Silesia, a 50 000-case fuzz run and the browser checks (`--bench` also regenerates the benchmark).
 
 ## Project layout
 

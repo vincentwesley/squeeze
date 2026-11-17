@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 // Runs every check in docs/ACCEPTANCE.md and prints PASS/FAIL per ID.
-// Usage: node scripts/acceptance.mjs [--full] [--skip-install]
-// Run from a fresh clone after `npm ci`. --full adds Silesia, a long fuzz run, the benchmark
-// regeneration and the Chromium checks.
+// Usage: node scripts/acceptance.mjs [--full] [--bench]
+// Run from a fresh clone after `npm ci`. --full adds Silesia, a long fuzz run
+// and the Chromium checks; --bench also regenerates docs/BENCHMARKS.md (about 25 minutes).
 
 import { execFileSync, spawnSync } from 'node:child_process';
 import { existsSync, mkdtempSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
@@ -10,6 +10,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
 const full = process.argv.includes('--full');
+const rebench = process.argv.includes('--bench');
 const results = [];
 const run = (cmd, args, opts = {}) =>
   spawnSync(cmd, args, { stdio: opts.quiet ? 'pipe' : 'inherit', maxBuffer: 1 << 30, ...opts });
@@ -130,7 +131,7 @@ await check('A10b', 'Pillow decodes Squeeze PNGs', async () => {
 });
 await check('A11', 'Fuzzing', () => npm('fuzz', '--iterations', full ? '50000' : '2000'));
 await check('A12', 'Benchmarks published', () => {
-  if (full && !npm('bench')) return false;
+  if (rebench && !npm('bench')) return false;
   const md = readFileSync('docs/BENCHMARKS.md', 'utf8');
   return (
     md.includes('## Method') &&
