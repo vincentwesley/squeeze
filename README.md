@@ -14,13 +14,13 @@ Everything that touches bits — Huffman coding, LZ77 matching, the bit reader a
 
 Measured beside zlib 1.3.1 (Node's built-in, native C) on the same machine; full method and per-file numbers in [docs/BENCHMARKS.md](docs/BENCHMARKS.md).
 
-| Silesia corpus (212 MB) | Squeeze | zlib | |
-|---|---:|---:|---|
-| Level 6 (default) size | 67,895,248 | 68,575,876 | **0.99% smaller** |
-| Level 9 size | 67,335,827 | 68,172,488 | **1.23% smaller** |
-| Level 10 (optimal parse) vs zlib -9 | 65,225,309 | 68,172,488 | **4.32% smaller** |
-| Level 6 compression speed | 14.7 MB/s | 41.1 MB/s | 2.8× slower (JavaScript vs C) |
-| Decompression speed | 149.9 MB/s | 333.7 MB/s | 2.2× slower |
+| Silesia corpus (212 MB)             |    Squeeze |       zlib |                               |
+| ----------------------------------- | ---------: | ---------: | ----------------------------- |
+| Level 6 (default) size              | 67,895,248 | 68,575,876 | **0.99% smaller**             |
+| Level 9 size                        | 67,335,827 | 68,172,488 | **1.23% smaller**             |
+| Level 10 (optimal parse) vs zlib -9 | 65,225,309 | 68,172,488 | **4.32% smaller**             |
+| Level 6 compression speed           |  14.7 MB/s |  41.1 MB/s | 2.8× slower (JavaScript vs C) |
+| Decompression speed                 | 149.9 MB/s | 333.7 MB/s | 2.2× slower                   |
 
 On the Canterbury corpus level 12 is **7.47% smaller than zlib -9**. Both corpora round-trip through zlib and GNU gzip in both directions; all 162 valid PngSuite images decode correctly and all 14 broken ones are rejected; hundreds of thousands of differential fuzz cases agree with zlib.
 
@@ -49,15 +49,18 @@ npm link             # optional: puts `squeeze` on your PATH
 
 ## Library
 
+The package is not on npm yet (see [docs/NEEDS-VIN.md](docs/NEEDS-VIN.md)); after `npm run build`, import from `dist/lib/index.js` or install the folder with `npm install /path/to/squeeze`.
+
 ```ts
+// Raw DEFLATE, zlib, gzip, PNG, and the error type.
 import {
   deflateRaw,
-  inflateRaw, // raw DEFLATE
+  inflateRaw,
   zlibCompress,
-  zlibDecompress, // zlib
+  zlibDecompress,
   gzip,
   gunzip,
-  gunzipMembers, // gzip
+  gunzipMembers,
   encodePng,
   decodePng,
   optimisePng,
