@@ -23,7 +23,8 @@ All milestones M0–M8 in docs/PLAN.md are complete. Development happened on bra
 - **Interoperability, both ways:** Node's zlib decodes Squeeze's output at every level (0–12) for raw, zlib and gzip; Squeeze decodes zlib's output at levels 0–9 and the Huffman-only, RLE and fixed strategies; GNU gzip interop including multi-member files; all 11 Canterbury and 12 Silesia files round-trip.
 - **PngSuite:** all 162 valid images match pngjs pixel for pixel (RGB under alpha 0 excepted, D16); all 14 broken images are rejected with `SqueezeError`; every image re-encodes losslessly (default, interlaced, optimised). Pillow decodes 258 Squeeze-written PNGs with 0 mismatches; Chromium decodes 7 test PNGs pixel-exactly.
 - **Fuzzing:** more than 500 000 differential cases across runs (seeds 7, 11–14, 21–23, 31, CI random seeds), 0 disagreements with zlib, 0 non-`SqueezeError` exceptions, slowest case under 40 ms. One real divergence found and fixed (gzip trailing data, D15).
-- **Tests:** 72 vitest tests (69 run by default, 3 Silesia tests opt-in); 23 error-handling tests (malformed streams are also checked against zlib).
+- **Tests:** 73 vitest tests (70 run by default, 3 Silesia tests opt-in); 23 error-handling tests (malformed streams are also checked against zlib). Coverage of `src/` without the corpus suites (`npm run coverage`): 94.9% of lines, 92.3% of statements, 86.2% of branches, 96.8% of functions.
+- **Release and hosting automation:** merging to `main` runs the Release workflow (tags the `package.json` version and publishes a GitHub Release with notes, web zip and npm tarball) and the Pages workflow (deploys `dist/web`).
 - **Web page:** checked at 390×844 and 1280×800 in Chromium, with no console errors and no horizontal overflow; all four tabs work; the largest file in `dist/web` is 177 KiB (a source map).
 - **Repository standard:** MIT licence (Copyright (c) 2026 Vin's Atelier), README, SECURITY.md, CONTRIBUTING.md, CHANGELOG.md, Dependabot, docs (RESEARCH, DECISIONS, PLAN, ACCEPTANCE, BENCHMARKS).
 
@@ -32,13 +33,12 @@ All milestones M0–M8 in docs/PLAN.md are complete. Development happened on bra
 - **Streaming / incremental API:** deliberately left out of v1 (DECISIONS B10). The whole-buffer API handles the largest corpus file (51 MB) comfortably.
 - **Compression speed parity with zlib:** Squeeze is about 2.2–3× slower than native C zlib. That is expected for JavaScript, and the gap is published rather than hidden. A binary-tree match finder (as in libdeflate) would speed up levels 10–12 most; it is the obvious next step.
 - **APNG, ZIP archives, colour management:** out of scope (DECISIONS B13, B14).
-- **Hosting the web page and publishing to npm:** both optional and need account access; see below.
+- **Publishing to npm:** optional and needs an npm account; see below.
 
 ## Needs Vin
 
-See docs/NEEDS-VIN.md for exact steps:
+Nothing is required. Optional extras, with exact steps in docs/NEEDS-VIN.md:
 
-1. Optionally publish the web page with GitHub Pages (workflow included in the doc).
-2. Optionally publish `@vins-atelier/squeeze` to npm.
-3. Enable private vulnerability reporting (referenced by SECURITY.md).
-4. If the `v1.0.0` tag or GitHub release is missing, create it (steps in the doc).
+1. Publish `@vins-atelier/squeeze` to npm (needs an npm account).
+2. Enable private vulnerability reporting (needs repository admin rights).
+3. If the Pages workflow reports that Pages is not enabled, switch **Settings → Pages → Source** to **GitHub Actions** once.
