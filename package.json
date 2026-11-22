@@ -62,11 +62,11 @@
     "@biomejs/biome": "^2.6.8",
     "@types/node": "^26.6.6",
     "@types/pngjs": "^6.0.5",
-    "@vitest/coverage-v8": "^5.1.0",
+    "@vitest/coverage-v8": "^5.1.1",
     "esbuild": "^0.28.2",
     "pngjs": "^7.0.0",
     "typescript": "^7.0.2",
-    "vitest": "^5.1.0"
+    "vitest": "^5.1.1"
   },
   "bugs": {
     "url": "https://github.com/vincentwesley/squeeze/issues"
