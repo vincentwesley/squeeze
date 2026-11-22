@@ -1,6 +1,7 @@
 import * as zlib from 'node:zlib';
 import { describe, expect, it } from 'vitest';
 import {
+  bitCostPerByte,
   deflateRaw,
   gunzip,
   gzip,
@@ -83,5 +84,19 @@ describe('traces', () => {
         et.tokens.bits[i],
       ]);
     }
+  });
+
+  it('bit costs per byte add up to the token bits, and stored bytes cost 8', () => {
+    const data = inputs.find((i) => i.name === 'repeated text')!.data;
+    const t = newTrace();
+    deflateRaw(data, { level: 6, trace: t });
+    const cost = bitCostPerByte(t, data.length);
+    let tokenBits = 0;
+    for (let i = 0; i < t.tokens.count; i++) tokenBits += t.tokens.bits[i];
+    const sum = cost.reduce((a, b) => a + b, 0);
+    expect(Math.abs(sum - tokenBits)).toBeLessThan(tokenBits * 1e-4);
+    const st = newTrace();
+    deflateRaw(data.subarray(0, 100), { level: 0, trace: st });
+    expect([...bitCostPerByte(st, 100)].every((c) => c === 8)).toBe(true);
   });
 });

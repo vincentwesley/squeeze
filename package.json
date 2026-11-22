@@ -56,7 +56,7 @@
     "bench": "node scripts/bench.mjs",
     "acceptance": "node scripts/acceptance.mjs",
     "serve": "node scripts/serve.mjs",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage --exclude 'test/corpora/**'"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.6.8",
