@@ -19,5 +19,7 @@ First release.
 - Static web visualiser: back-reference arcs, bit-cost heat map, Huffman tree construction, level comparison, PNG filter view.
 - Test suites: zlib/GNU gzip interoperability, Canterbury, Silesia, PngSuite, Chromium decoding, differential fuzzing against zlib.
 - Benchmarks against zlib (`npm run bench`, `docs/BENCHMARKS.md`) and an acceptance runner (`npm run acceptance`).
+- Release automation (tag, GitHub Release with web zip and npm tarball), GitHub Pages deployment of the web page, test coverage report (`npm run coverage`).
+- Issue and pull request templates, code of conduct, `.editorconfig`, `.nvmrc`; GitHub Actions updated to current major versions.
 
 [1.0.0]: https://github.com/vincentwesley/squeeze/releases/tag/v1.0.0

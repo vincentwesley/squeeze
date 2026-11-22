@@ -55,15 +55,20 @@
     "fuzz": "node scripts/fuzz.mjs",
     "bench": "node scripts/bench.mjs",
     "acceptance": "node scripts/acceptance.mjs",
-    "serve": "node scripts/serve.mjs"
+    "serve": "node scripts/serve.mjs",
+    "coverage": "vitest run --coverage"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.6.8",
     "@types/node": "^26.6.6",
     "@types/pngjs": "^6.0.5",
+    "@vitest/coverage-v8": "^5.1.0",
     "esbuild": "^0.28.2",
     "pngjs": "^7.0.0",
     "typescript": "^7.0.2",
     "vitest": "^5.1.0"
+  },
+  "bugs": {
+    "url": "https://github.com/vincentwesley/squeeze/issues"
   }
 }

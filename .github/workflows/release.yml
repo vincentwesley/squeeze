@@ -1,0 +1,66 @@
+name: Release
+
+# When main carries a package.json version that has no tag yet, build and test it, then
+# create the tag and a GitHub Release with the changelog notes and build artifacts.
+# Uses only the repository's built-in GITHUB_TOKEN.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - name: Read version
+        id: v
+        run: |
+          version=$(node -p "require('./package.json').version")
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          if git rev-parse -q --verify "refs/tags/v$version" >/dev/null; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+            echo "v$version is already tagged; nothing to do."
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Build and test
+        if: steps.v.outputs.exists == 'false'
+        run: |
+          npm ci
+          npm run lint
+          npm run build
+          node scripts/fetch-corpora.mjs
+          npm test
+      - name: Package artifacts and notes
+        if: steps.v.outputs.exists == 'false'
+        run: |
+          version=${{ steps.v.outputs.version }}
+          (cd dist && zip -qr "../squeeze-web-$version.zip" web)
+          npm pack --silent
+          awk -v v="$version" 'index($0, "## [" v "]") == 1 {p=1; next} /^## \[/ {p=0} p' CHANGELOG.md > notes.md
+          test -s notes.md
+      - name: Create tag and GitHub Release
+        if: steps.v.outputs.exists == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          version=${{ steps.v.outputs.version }}
+          gh release create "v$version" \
+            --target "$GITHUB_SHA" \
+            --title "Squeeze $version" \
+            --notes-file notes.md \
+            "squeeze-web-$version.zip" "vins-atelier-squeeze-$version.tgz"
