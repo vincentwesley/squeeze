@@ -117,7 +117,7 @@ squeeze bench file1 file2 -l 1,6,9         # Squeeze vs Node's zlib on your file
 npm run build && npm run serve   # http://127.0.0.1:8080/
 ```
 
-`dist/web/` is a plain static site (HTML, CSS and two scripts, about 80 KB before source maps) that can be hosted anywhere. Compression runs in a Web Worker on the visitor's device; nothing is uploaded.
+A prebuilt copy is attached to each [release](https://github.com/vincentwesley/squeeze/releases) as `squeeze-web-<version>.zip`. `dist/web/` is a plain static site (HTML, CSS and two scripts, about 80 KB before source maps) that can be hosted anywhere. Compression runs in a Web Worker on the visitor's device; nothing is uploaded.
 
 - **Back-refs** — your text with every LZ77 match drawn as an arc back to its source. Hover a character for the token, its length, distance and bit cost. Switch to _Bit cost_ for a heat map of bits per byte. Open a `.gz`, `.zz` or `.deflate` file to see the matches another compressor chose.
 - **Huffman** — replay Huffman's algorithm merging symbols for any block, next to the canonical codes DEFLATE actually wrote.
