@@ -1,6 +1,6 @@
 # Handover
 
-State of Squeeze at v1.0.0 (2026-11-17), so anyone can pick it up.
+**Status: complete and closed at v1.0.0** (see docs/ROADMAP.md for the definition of done and the maintenance policy). This file records the final state so anyone can pick it up.
 
 ## How to resume
 

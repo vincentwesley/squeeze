@@ -6,7 +6,15 @@
 ![runtime dependencies: 0](https://img.shields.io/badge/runtime%20dependencies-0-blue)
 ![licence: MIT](https://img.shields.io/badge/licence-MIT-green)
 
-Built by **Vin's Atelier**.
+Built by **Vin's Atelier**. **[Live demo](https://vincentwesley.github.io/squeeze/)** · [Download v1.0.0](https://github.com/vincentwesley/squeeze/releases/tag/v1.0.0)
+
+![Back-references drawn as arcs over a paragraph of text, with a tooltip showing one match: copy 6 bytes from 79 bytes back, 15 bits](docs/images/backrefs.png)
+
+| Huffman tree built from one block's symbol counts                                   | Speed vs size for every level, on a phone                                                                                                                       |
+| ----------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ![Huffman tree for the literal/length alphabet of a block](docs/images/huffman.png) | <img src="docs/images/levels-phone.png" alt="Levels view on a phone: compressed size and time for levels 0 to 12 and the browser's native deflate" width="260"> |
+
+<sub>These screenshots were losslessly shrunk by 20–28% with `squeeze png optimise`.</sub>
 
 Everything that touches bits — Huffman coding, LZ77 matching, the bit reader and writer, CRC-32, Adler-32, PNG filters and Adam7 — is implemented in `src/` with no compression or image libraries. Libraries are used only for tests, the build and tooling.
 
@@ -159,8 +167,8 @@ docs/           research, decisions, plan, acceptance, benchmarks, handover
 - [docs/BENCHMARKS.md](docs/BENCHMARKS.md) — ratio and speed beside zlib, with the method
 - [docs/RESEARCH.md](docs/RESEARCH.md) — specs, implementations studied, data licences
 - [docs/DECISIONS.md](docs/DECISIONS.md) — what was chosen and rejected, and why
-- [docs/PLAN.md](docs/PLAN.md) and [docs/ACCEPTANCE.md](docs/ACCEPTANCE.md)
-- [CHANGELOG.md](CHANGELOG.md), [SECURITY.md](SECURITY.md), [CONTRIBUTING.md](CONTRIBUTING.md)
+- [docs/PLAN.md](docs/PLAN.md), [docs/ACCEPTANCE.md](docs/ACCEPTANCE.md) and [docs/ROADMAP.md](docs/ROADMAP.md) (finished scope and what is deliberately not planned)
+- [CHANGELOG.md](CHANGELOG.md), [SECURITY.md](SECURITY.md), [CONTRIBUTING.md](CONTRIBUTING.md), [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
 
 ## Test data
 
