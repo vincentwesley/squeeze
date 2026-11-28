@@ -22,6 +22,14 @@ const LEVELS_LIMIT = 256 << 10; // bytes used for the levels comparison
 
 const STRATEGY = (l: number) => (l === 0 ? 'stored' : l <= 3 ? 'greedy' : l <= 9 ? 'lazy' : 'optimal');
 
+// Bars are sized from data-w (percent) via CSSOM, since the CSP forbids inline style attributes.
+new MutationObserver(() => {
+  for (const i of document.querySelectorAll<HTMLElement>('i[data-w]')) {
+    i.style.width = `${i.dataset.w}%`;
+    i.removeAttribute('data-w');
+  }
+}).observe(document.body, { childList: true, subtree: true });
+
 // ---- worker plumbing -------------------------------------------------------
 const worker = new Worker('worker.js');
 let nextId = 1;
@@ -291,8 +299,8 @@ function drawLevels(orig: number, points: LevelPoint[], native?: { size: number;
           r,
         ) => `<div class="lv-row${r.ref ? ' ref' : ''}" title="${r.label}: ${fmt(r.size)} bytes, ${r.ms.toFixed(1)} ms">
       <span class="lv-label">${r.label}<small>${r.sub}</small></span>
-      <span class="lv-bar"><i style="width:${((100 * r.size) / maxSize).toFixed(2)}%"></i><em>${pct(r.size, orig)}${r.size === best ? ' · smallest' : ''}</em></span>
-      <span class="lv-bar time"><i style="width:${(100 * logMs(r.ms)).toFixed(2)}%"></i><em>${r.ms < 10 ? r.ms.toFixed(1) : fmt(Math.round(r.ms))} ms</em></span>
+      <span class="lv-bar"><i data-w="${((100 * r.size) / maxSize).toFixed(2)}"></i><em>${pct(r.size, orig)}${r.size === best ? ' · smallest' : ''}</em></span>
+      <span class="lv-bar time"><i data-w="${(100 * logMs(r.ms)).toFixed(2)}"></i><em>${r.ms < 10 ? r.ms.toFixed(1) : fmt(Math.round(r.ms))} ms</em></span>
     </div>`,
       )
       .join('')}`;
@@ -360,7 +368,7 @@ function encodeImage(img: ImageData, label: string): void {
     $('png-filters').innerHTML = res.filters
       .map(
         (f) =>
-          `<div class="lv-row" title="${f.filter}: ${fmt(f.size)} bytes"><span class="lv-label">${f.filter}</span><span class="lv-bar"><i style="width:${((100 * f.size) / max).toFixed(1)}%"></i><em>${fmt(f.size)} bytes${f.size === best ? ' · smallest' : ''}</em></span></div>`,
+          `<div class="lv-row" title="${f.filter}: ${fmt(f.size)} bytes"><span class="lv-label">${f.filter}</span><span class="lv-bar"><i data-w="${((100 * f.size) / max).toFixed(1)}"></i><em>${fmt(f.size)} bytes${f.size === best ? ' · smallest' : ''}</em></span></div>`,
       )
       .join('');
     if (downloadUrl) URL.revokeObjectURL(downloadUrl);
@@ -401,7 +409,7 @@ function decodePngFile(bytes: Uint8Array, name: string): void {
       $('png-filters').innerHTML = r2.result.filters
         .map(
           (f) =>
-            `<div class="lv-row"><span class="lv-label">${f.filter}</span><span class="lv-bar"><i style="width:${((100 * f.size) / max).toFixed(1)}%"></i><em>${fmt(f.size)} bytes${f.size === best ? ' · smallest' : ''}</em></span></div>`,
+            `<div class="lv-row"><span class="lv-label">${f.filter}</span><span class="lv-bar"><i data-w="${((100 * f.size) / max).toFixed(1)}"></i><em>${fmt(f.size)} bytes${f.size === best ? ' · smallest' : ''}</em></span></div>`,
         )
         .join('');
       $('png-info').innerHTML +=

@@ -595,3 +595,18 @@ figcaption {
     font-size: 0.75rem;
   }
 }
+.ramp .r0 {
+  background: #cde2fb;
+}
+.ramp .r1 {
+  background: #86b6ef;
+}
+.ramp .r2 {
+  background: #3987e5;
+}
+.ramp .r3 {
+  background: #1c5cab;
+}
+.ramp .r4 {
+  background: #0d366b;
+}

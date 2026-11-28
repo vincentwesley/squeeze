@@ -176,4 +176,4 @@ The Canterbury and Silesia corpora state no licence, so they are downloaded at t
 
 ## Licence
 
-[MIT](LICENSE) © 2026 Vin's Atelier.
+[MIT](LICENSE) © 2026 Vincent Wesley (Vin's Atelier).

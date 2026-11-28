@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Squeeze — watch DEFLATE compress your text and images</title>
   <meta name="description" content="DEFLATE, zlib, gzip and PNG written from scratch. See LZ77 back-references, Huffman trees and compression levels on your own text and images.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; object-src 'none'; base-uri 'none'; form-action 'none'; worker-src 'self' blob:">
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232a78d6'/%3E%3Cpath d='M8 12h16M11 16h10M14 20h4' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
 </head>
@@ -51,7 +52,7 @@
         </label>
       </div>
       <div class="legend" id="legend-refs"><span><i class="sw match"></i>copied from earlier (a match)</span><span><i class="sw lit"></i>literal byte</span><span><i class="sw arc"></i>arc: copy → source</span><span class="muted">Hover or tap a character for details.</span></div>
-      <div class="legend" id="legend-heat" hidden><span>Bits spent per byte:</span><span class="ramp"><i style="background:#cde2fb"></i><i style="background:#86b6ef"></i><i style="background:#3987e5"></i><i style="background:#1c5cab"></i><i style="background:#0d366b"></i></span><span class="muted">0 → 12+ bits (uncompressed text costs 8)</span></div>
+      <div class="legend" id="legend-heat" hidden><span>Bits spent per byte:</span><span class="ramp"><i class="r0"></i><i class="r1"></i><i class="r2"></i><i class="r3"></i><i class="r4"></i></span><span class="muted">0 → 12+ bits (uncompressed text costs 8)</span></div>
       <div id="textview" class="textview"></div>
       <p id="view-note" class="hint"></p>
       <h2>Blocks</h2>

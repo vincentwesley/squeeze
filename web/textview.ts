@@ -1,6 +1,7 @@
 // Canvas view of the uncompressed bytes with LZ77 back-references drawn as arcs,
 // or coloured by the number of bits each byte cost (a heat map).
 
+import { escapeHtml } from './huffview.js';
 import type { PlainTrace } from './protocol.js';
 
 export type ViewMode = 'refs' | 'heat';
@@ -286,7 +287,7 @@ export class TextView {
       const c = t.dist[tok];
       const ch =
         c >= 33 && c < 127
-          ? `“${String.fromCharCode(c)}”`
+          ? `“${escapeHtml(String.fromCharCode(c))}”`
           : c === 32
             ? 'space'
             : `byte 0x${c.toString(16).padStart(2, '0')}`;
